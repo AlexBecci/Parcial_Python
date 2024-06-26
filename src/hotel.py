@@ -23,7 +23,7 @@ class Hotel:
                 costo_total = (fecha_fin - fecha_inicio).days * habitacion.valor_por_noche
                 reserva = Reserva(cliente, fecha_inicio, fecha_fin, costo_total)
                 habitacion.reservas.append(reserva)
-                habitacion.cambiar_estado('ocupada')
+                habitacion.actualizar_estado()
                 self.guardar_reservas_csv('..\\data\\reservas.csv')
                 return True
         return False
@@ -43,7 +43,7 @@ class Hotel:
     def listar_habitaciones_disponibles(self, fecha_inicio, fecha_fin):
         disponibles = []
         for habitacion in self.habitaciones:
-            if habitacion.estado == 'disponible' and habitacion.esta_disponible(fecha_inicio, fecha_fin):
+            if habitacion.esta_disponible(fecha_inicio, fecha_fin):
                 disponibles.append(habitacion)
         return disponibles
 
@@ -92,6 +92,7 @@ class Hotel:
                     if habitacion:
                         reserva = Reserva(cliente, fecha_inicio, fecha_fin, costo_total)
                         habitacion.reservas.append(reserva)
+                        habitacion.actualizar_estado()  # Actualizar el estado de la habitación
 
     def guardar_clientes_csv(self, archivo_csv):
         with open(archivo_csv, mode='w', newline='') as file:
